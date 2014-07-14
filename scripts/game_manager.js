@@ -30,62 +30,86 @@ GameManager.prototype.setup = function()
 
 GameManager.prototype.click = function(evt, that) 
 {
-  var x = evt.layerX || evt.offsetX;
-  var y = evt.layerY || evt.offsetY;
-  // var tmp = [];
+  //== Récupération de la position du clic de la souris
+  var x = evt.offsetX || evt.layerX;
+  var y = evt.offsetY || evt.layerY;
 
+  //== A partir de la position de la souris on récupère la position du Tile.
   x = Math.floor(x / 50);
   y = Math.floor(y / 50);
 
+  //== Si on a cliqué sur une Tile vide on sort
   if(that.grid.cells[x][y] == null) return;
 
+  //== On réinitialise le tableau qui contiendra le groupe de Tile sélectionné
   this.groupe = [];
 
-  that.search(x, y, that.grid.cells[x][y].color);
+  //== On recherche le groupe de Tile
+  this.search(x, y, this.grid.cells[x][y].color);
 
-  console.log(this.groupe);
-
+  //== Si le groupe de Tile est peuplé d'au moins 2 Tile
   if(this.groupe.length > 1)
   {
+    // console.log(this.groupe);
+    //== On parcours le groupe de Tile
     for(var i = 0 ; i < this.groupe.length ; i++)
     {
-      // tmp = [];
-      // // NULL // 0 to i // i + 1 to lenght
-      // console.log(this.groupe[i].y - 1);
-      // console.log(this.groupe[i].y + 1);
-      // console.log(this.grid.cells.length);
-      // tmp = tmp.concat(null, this.grid.cells[this.groupe[i].x].slice(0, this.groupe[i].y), this.grid.cells[this.groupe[i].x].slice(this.groupe[i].y + 1, this.grid.cells.length + 1));
-      // console.log(tmp);
-      // this.grid.cells[this.groupe[i].x] = tmp;
+      // console.log(this.groupe[i].x + ' ' + this.groupe[i].y);
+      //== On supprime le Tile
       this.grid.cells[this.groupe[i].x][this.groupe[i].y] = null;
+      // console.log(this.grid.cells[this.groupe[i].x][this.groupe[i].y]);
     }
-    that.actuate();
+    // console.log(this.grid.cells);
+
+    //== Il faut remonté les Tile vide vers le haut de la grille
+    for(var x = 0 ; x < this.grid.size ; x++)
+    {
+      // console.log(this.grid.cells[x]);
+      if(this.grid.cells[x].every(function(elem) { return (elem == null); }))
+      {
+        z = x;
+        //== On que l'on est pas a droite de la grille
+        while(z < (this.grid.lastColumn - 1))
+        {
+          //== On sauvegarde la ligne
+          tmp = this.grid.cells[z];
+          //== On interverti les Tile
+          this.grid.cells[z] = this.grid.cells[z + 1];
+          this.grid.cells[z + 1] = tmp;
+          z ++;
+        } 
+        this.grid.lastColumn --;
+      }
+
+      for(var y = 0 ; y < this.grid.size ; y++)
+      {
+        //== Si le tile est vide
+        if(this.grid.cells[x][y] == null)
+        {
+          z = y;
+          console.log(z);
+          //== On que l'on est pas en haut de la grille
+          while(z > 0)
+          {
+            //== On sauvegarde le Tile
+            tmp = this.grid.cells[x][z];
+            //== On interverti les Tile
+            this.grid.cells[x][z] = this.grid.cells[x][z - 1];
+            this.grid.cells[x][z - 1] = tmp;
+            z --;
+          }
+          // this.grid.lastLigne[x] --;
+        }
+      }
+    }
   }
   else
   {
     this.grid.cells[this.groupe[0].x][this.groupe[0].y].visited = false;
   }
-};
 
-GameManager.prototype.decaleHautBas = function(x, y) 
-{
-  if(typeof this.grid.cells[x][y - 1] != 'undefined' 
-    && this.grid.cells[x][y - 1] != null 
-    // && !this.grid.cells[x][y - 1].visited
-  )  
-  {
-    // console.log(this.grid.cells[x][y - 1]);
-    if(y > 0)
-    {
-      for (var i = y ; i > 0; i --) 
-      {
-        console.log(x + ' ' + i);
-        this.grid.cells[x][i] = this.grid.cells[x][i - 1];
-        // this.decaleHautBas(x, i);
-      };
-      this.grid.cells[x][0] = null;
-    }    
-  }
+  //== On actualise la vue.
+  that.actuate();
 };
 
 GameManager.prototype.search = function(x, y, color)

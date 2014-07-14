@@ -2,6 +2,8 @@ function Grid(size)
 {
   this.size = size;
   this.tileSize = 50;  
+  this.lastColumn = size;
+  this.lastLigne = [];
 
   this.cells = this.empty(); 
 
@@ -15,6 +17,7 @@ Grid.prototype.empty = function ()
   for(var x = 0 ; x < this.size ; x++)
   {
     cells[x] = [];
+    this.lastLigne[x] = this.size;
 
     for(var y = 0 ; y < this.size ; y++)
     {
