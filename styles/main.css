@@ -18,7 +18,7 @@ body {
   position: relative;
   font-family: 'Roboto Condensed', 'Helvetica', 'Arial', sans-serif;
   font-weight: 300;
-  background-color: #FFFFFF;
+  background-color: #333;
   box-sizing: border-box;
   overflow: hidden;
   min-height: 100%;

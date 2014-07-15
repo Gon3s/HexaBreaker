@@ -48,24 +48,44 @@ GameManager.prototype.click = function(evt, that)
   this.search(x, y, this.grid.cells[x][y].color);
 
   //== Si le groupe de Tile est peuplé d'au moins 2 Tile
-  if(this.groupe.length > 1)
+  if(this.groupe.length > 0)
   {
-    // console.log(this.groupe);
+    console.log(this.groupe);
     //== On parcours le groupe de Tile
     for(var i = 0 ; i < this.groupe.length ; i++)
     {
-      // console.log(this.groupe[i].x + ' ' + this.groupe[i].y);
-      //== On supprime le Tile
-      this.grid.cells[this.groupe[i].x][this.groupe[i].y] = null;
-      // console.log(this.grid.cells[this.groupe[i].x][this.groupe[i].y]);
+      //== On marque le tile comme null
+      this.grid.cells[this.groupe[i].x][this.groupe[i].y].color = null;
+      this.grid.cells[this.groupe[i].x][this.groupe[i].y].visited = false;
     }
-    // console.log(this.grid.cells);
-
+    
     //== Il faut remonté les Tile vide vers le haut de la grille
     for(var x = 0 ; x < this.grid.size ; x++)
     {
-      // console.log(this.grid.cells[x]);
-      if(this.grid.cells[x].every(function(elem) { return (elem == null); }))
+      for(var y = 0 ; y < this.grid.size ; y++)
+      {
+        //== Si le tile est vide
+        // console.log(this.grid.cells[x][y]);
+        if(this.grid.cells[x][y] != null && this.grid.cells[x][y].color == null && !this.grid.cells[x][y].visited)
+        {
+          // this.grid.cells[x][y].visited = true;
+          z = y;
+          // console.log('Y > : ' + y);
+          //== On que l'on est pas en haut de la grille
+          while(z > 0)
+          {
+            //== On sauvegarde le Tile
+            tmp = this.grid.cells[x][z];
+            //== On interverti les Tile
+            this.grid.cells[x][z] = this.grid.cells[x][z - 1];
+            this.grid.cells[x][z - 1] = tmp;
+            z --;
+          }
+          // this.grid.lastLigne[x] --;
+        }
+      }
+
+      if(this.grid.cells[x].every(function(elem) { return (elem == null || elem.color == null); }))
       {
         z = x;
         //== On que l'on est pas a droite de la grille
@@ -79,27 +99,6 @@ GameManager.prototype.click = function(evt, that)
           z ++;
         } 
         this.grid.lastColumn --;
-      }
-
-      for(var y = 0 ; y < this.grid.size ; y++)
-      {
-        //== Si le tile est vide
-        if(this.grid.cells[x][y] == null)
-        {
-          z = y;
-          console.log(z);
-          //== On que l'on est pas en haut de la grille
-          while(z > 0)
-          {
-            //== On sauvegarde le Tile
-            tmp = this.grid.cells[x][z];
-            //== On interverti les Tile
-            this.grid.cells[x][z] = this.grid.cells[x][z - 1];
-            this.grid.cells[x][z - 1] = tmp;
-            z --;
-          }
-          // this.grid.lastLigne[x] --;
-        }
       }
     }
   }
@@ -115,27 +114,34 @@ GameManager.prototype.click = function(evt, that)
 GameManager.prototype.search = function(x, y, color)
 {
   // console.log('Search ' + x + ' ' + y + ' ' + color);
-  if(this.grid.cells[x][y] != null && !this.grid.cells[x][y].visited)
+  var current = this.grid.cells[x][y];
+  if(current != null && !current.visited && current != null)
   {
-    if(this.grid.cells[x][y].color == color)
+    if(current.color == color)
     {
-      this.grid.cells[x][y].visited = true;
-      this.groupe.push(this.grid.cells[x][y]);
+      console.log('Search ' + x + ' ' + y + ' ' + color);
+      console.log(current);
+      this.groupe.push(current);
+      current.visited = true;
       if(typeof this.grid.cells[x-1] != 'undefined')
       {
-        this.search(x-1, y, color);
+        z = x - 1;
+        this.search(z, y, color);
       }
       if(typeof this.grid.cells[x][y-1] != 'undefined')
       {
-        this.search(x, y-1, color);
+        z = y - 1;
+        this.search(x, z, color);
       }
       if(typeof this.grid.cells[x+1] != 'undefined')
       {
-        this.search(x+1, y, color);
+        z = x + 1;
+        this.search(z, y, color);
       }
       if(typeof this.grid.cells[x][y+1] != 'undefined')
       {
-        this.search(x, y+1, color);
+        z = y + 1;
+        this.search(x, z, color);
       }
     }
   }
