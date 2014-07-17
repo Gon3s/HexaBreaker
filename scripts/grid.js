@@ -4,6 +4,7 @@ function Grid(size)
   this.tileSize = 50;  
   this.lastColumn = size;
   this.lastLigne = [];
+  this.state = 0;
 
   this.cells = this.empty(); 
 
