@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="description" content="@TODO:description">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HexaBreaker</title>
+    <title>@TODO:Title</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -14,7 +14,7 @@
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
+    <meta name="apple-mobile-web-app-title" content="@TODO:Title">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -25,27 +25,46 @@
     <link rel="canonical" href="http://www.example.com/">
     -->
 
-    <!-- build:css styles/components/main.min.css -->
-    <link rel="stylesheet" href="styles/h5bp.css">
-    <link rel="stylesheet" href="styles/components/components.css">
     <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
 
-    <!-- Google Fonts -->
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700'>
+    <link href="https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <main style="margin-top: 25px;">
-      <canvas id="grid" style="border: 1px solid #ddd"></canvas>
-    </main>
+    <div class="navbar">
+      Lorem ipsum dolor sit amet
+    </div>
 
-    <!-- build:js scripts/main.min.js -->
+    <div class="container">
+      <div class="heading">
+        <h1>JawBreaker</h1>
+        <div class="scoreboard">
+          <div class="score"> 
+            <span>Score</span>
+            0
+          </div>
+          <div class="bestscore">
+            <span>Best</span>
+            12587
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="presentation">
+          Consectetur adipisicing elit, sed do eiusmod.
+        </p>
+        <span class="btn newgame">New Game</span>
+      </div>
+
+      <div class="game">
+        <canvas id="grid" style="border: 1px solid #ddd"></canvas>
+      </div>
+    </div>  
+
     <script src="scripts/game_manager.js"></script>
     <script src="scripts/grid.js"></script>
     <script src="scripts/tile.js"></script>
     <script src="scripts/html_actuator.js"></script>
     <script src="scripts/main.js"></script>
-    <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -56,6 +75,5 @@
       // ga('create', 'UA-XXXXX-X');
       // ga('send', 'pageview');
     </script>
-    <!-- Built with love using Web Starter Kit -->
   </body>
 </html>
